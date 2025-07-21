@@ -1,6 +1,6 @@
-const cart = JSON.parse(localStorage.getItem('cart')) || [];
+export const cart = JSON.parse(localStorage.getItem('cart')) || [];
 displayCartQuantity();
-function addToCart(index, quantity) {
+export function addToCart(index, quantity) {
     let alreadyExists = false;
     for (const product of cart) {
         if (product.index == index) {

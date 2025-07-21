@@ -1,5 +1,5 @@
 
-
+import { cart, addToCart } from '../data/cart.js';
 
 // const products = [
 //     {
