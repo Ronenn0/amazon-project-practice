@@ -73,7 +73,7 @@ products.forEach((product, i) => {
 
   <div class="product-spacer"></div>
 
-  <div class="added-to-cart" data-will-be-hidden='false'>
+  <div class="added-to-cart">
     <img src="images/icons/checkmark.png">
     Added
   </div>

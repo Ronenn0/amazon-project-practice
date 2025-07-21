@@ -25,13 +25,12 @@ function addToCart(index, quantity) {
 
 function showAddedToCartMessage(index) {
     const message = document.querySelectorAll('.added-to-cart')[index];
-    message.style.opacity = 1;
+    message.classList.add('visible');;
 
     //fix added text being played with.
-    if (message.dataset.willBeHidden == 'true') return;
-    message.dataset.willBeHidden = 'true';
-    setTimeout(() => {
-        message.style.opacity = 0;
+    clearTimeout(message.dataset.timeoutId);
+    message.dataset.timeoutId = setTimeout(() => {
+        message.classList.remove('visible');
         message.dataset.willBeHidden = 'false';
     }, 2000);
 }
