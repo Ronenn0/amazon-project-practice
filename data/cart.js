@@ -1,4 +1,4 @@
-export const cart = JSON.parse(localStorage.getItem('cart')) || [];
+export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 export function addToCart(index, quantity) {
     let alreadyExists = false;
     for (const product of cart) {
@@ -12,13 +12,18 @@ export function addToCart(index, quantity) {
     if (!alreadyExists) {
         cart.push({
             index,
-            quantity
+            quantity,
+            shippingHandlingCost: 0
         });
     }
-    localStorage.setItem('cart', JSON.stringify(cart));
+    saveCart();
     // cart[index] = (cart[index] || 0) + quantity;
     console.log(cart);
     showAddedToCartMessage(index);
+}
+
+export function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function showAddedToCartMessage(index) {
