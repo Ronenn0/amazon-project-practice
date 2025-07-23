@@ -25,7 +25,7 @@ function displayCheckoutGrid() {
                 ${name}
               </div>
               <div class="product-price">
-                $${(priceCents / 100).toFixed(2)}
+                $${(Math.round(priceCents) / 100).toFixed(2)}
               </div>
               <div class="product-quantity">
                 <span>
