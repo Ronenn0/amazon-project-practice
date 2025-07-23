@@ -1,4 +1,4 @@
-import { fibonaci, sum } from "./test1-function.js";
+import { fibonaci, sum } from "../tests/test1-function.js";
 
 // console.log('test suite: Fibonaci');
 

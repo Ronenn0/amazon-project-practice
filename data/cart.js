@@ -1,3 +1,7 @@
+class Cart {
+
+}
+
 export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 export function addToCart(index, quantity) {
     let alreadyExists = false;
@@ -21,6 +25,7 @@ export function addToCart(index, quantity) {
     console.log(cart);
     showAddedToCartMessage(index);
 }
+
 
 export function saveCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
