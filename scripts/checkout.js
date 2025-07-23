@@ -2,7 +2,6 @@ import { cart, totalQuantity, saveCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
-console.log(dayjs);
 
 const orderSummaryContainer = document.querySelector('.order-summary');
 
@@ -235,12 +234,20 @@ function displayShippingDate(radio) {
     const deliveryOptionDate = parent.querySelector('.delivery-option-date');
     const deliveryTime = Number(radio.dataset.days); //in days
     const today = dayjs();
-    const deliveryDate = today.add(deliveryTime, 'days').format('dddd, MMMM D');
+    let deliveryDate = today.add(deliveryTime, 'days');
+    const deliveryDay = deliveryDate.format('dddd');
+    console.log(deliveryDay);
 
-    radio.dataset.date = deliveryDate;
-    deliveryOptionDate.textContent = ` ${deliveryDate} `;
+    //No shipping in weekends
+    const addDays = deliveryDay == 'Saturday' ? 2 : deliveryDay == 'Saturday' ? 1 : 0;
+    deliveryDate = deliveryDate.add(addDays, 'days');
 
-    console.log(deliveryOptionDate);
+    const deliveryDateFormated = deliveryDate.format('dddd, MMMM D');
+
+    radio.dataset.date = deliveryDateFormated;
+    deliveryOptionDate.textContent = ` ${deliveryDateFormated} `;
+
+    // console.log(deliveryOptionDate);
 }
 
 function getCartItemContainer(index) {
