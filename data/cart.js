@@ -1,50 +1,52 @@
-class Cart {
+export class Cart {
+    cartItems;
 
-}
+    constructor() {
+        this.cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    }
 
-export let cart = JSON.parse(localStorage.getItem('cart')) || [];
-export function addToCart(index, quantity) {
-    let alreadyExists = false;
-    for (const product of cart) {
-        if (product.index == index) {
-            product.quantity += quantity;
-            //console.log(cart);
-            alreadyExists = true;
-            break;
+    addToCart(index, quantity) {
+        let alreadyExists = false;
+        for (const product of cart) {
+            if (product.index == index) {
+                product.quantity += quantity;
+                //console.log(cart);
+                alreadyExists = true;
+                break;
+            }
         }
+        if (!alreadyExists) {
+            cart.push({
+                index,
+                quantity,
+                shippingHandlingCost: 0
+            });
+        }
+        saveCart();
+        // cart[index] = (cart[index] || 0) + quantity;
+        console.log(cart);
+        showAddedToCartMessage(index);
     }
-    if (!alreadyExists) {
-        cart.push({
-            index,
-            quantity,
-            shippingHandlingCost: 0
-        });
+
+    saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
-    saveCart();
-    // cart[index] = (cart[index] || 0) + quantity;
-    console.log(cart);
-    showAddedToCartMessage(index);
-}
 
+    showAddedToCartMessage(index) {
+        const message = document.querySelectorAll('.added-to-cart')[index];
+        message.classList.add('visible');;
 
-export function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
+        //fix added text being played with.
+        clearTimeout(message.dataset.timeoutId);
+        message.dataset.timeoutId = setTimeout(() => {
+            message.classList.remove('visible');
+            message.dataset.willBeHidden = 'false';
+        }, 2000);
+    }
 
-function showAddedToCartMessage(index) {
-    const message = document.querySelectorAll('.added-to-cart')[index];
-    message.classList.add('visible');;
-
-    //fix added text being played with.
-    clearTimeout(message.dataset.timeoutId);
-    message.dataset.timeoutId = setTimeout(() => {
-        message.classList.remove('visible');
-        message.dataset.willBeHidden = 'false';
-    }, 2000);
-}
-
-export function totalQuantity() {
-    let counter = 0;
-    cart.forEach(product => counter += product.quantity);
-    return counter;
+    totalQuantity() {
+        let counter = 0;
+        cart.forEach(product => counter += product.quantity);
+        return counter;
+    }
 }
