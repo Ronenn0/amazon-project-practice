@@ -3,6 +3,8 @@ import { cart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
+import '../data/car.js';
+
 
 const orderSummaryContainer = document.querySelector('.order-summary');
 
