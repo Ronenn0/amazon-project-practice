@@ -1,4 +1,5 @@
-import { cart, totalQuantity, saveCart } from "../data/cart.js";
+import { cart } from "../data/cart.js";
+
 import { products } from "../data/products.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
@@ -6,10 +7,11 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 const orderSummaryContainer = document.querySelector('.order-summary');
 
 function displayCheckoutGrid() {
+  // cart = new Cart();
   orderSummaryContainer.innerHTML = '';
-  cart.forEach((item) => {
+  cart.cartItems.forEach((item) => {
     const product = products[item.index];
-    const { shippingHandlingCost, id, image, name, priceCents } = product;
+    const { id, image, name } = product;
     const { quantity } = item;
     const html = `
     <div class="cart-item-container" data-item-index="${item.index}">
@@ -25,7 +27,7 @@ function displayCheckoutGrid() {
                 ${name}
               </div>
               <div class="product-price">
-                $${(Math.round(priceCents) / 100).toFixed(2)}
+                $${product.getPrice(true, true)}
               </div>
               <div class="product-quantity">
                 <span>
@@ -134,7 +136,7 @@ function displayDeliveryOptionsRadios() {
     const price = Number(radio.dataset.price);
 
     displayShippingDate(radio);
-    cart.forEach(item => {
+    cart.cartItems.forEach(item => {
       // console.log(index, item.index);
       // console.log(price, item.shippingHandlingCost);
       if (item.index == index && price == item.shippingHandlingCost) {
@@ -163,15 +165,15 @@ function deleteItemButtonEventListener() {
     btn.addEventListener('click', () => {
       const index = btn.dataset.itemIndex;
       // cart = cart.filter(item => item.index != index);
-      for (let i = 0; i < cart.length; i++) {
-        const item = cart[i];
+      for (let i = 0; i < cart.cartItems.length; i++) {
+        const item = cart.cartItems[i];
         if (item.index == index) {
-          cart.splice(i, 1);
+          cart.cartItems.splice(i, 1);
           break;
         }
       }
       // displayCheckoutGrid();
-      saveCart();
+      cart.saveCart();
       const container = getCartItemContainer(index);
       container.remove();
       updatePage();
@@ -215,12 +217,12 @@ function saveQuantityButtonEventListener() {
       saveButton.classList.remove('visible');
       updateButton.classList.remove('hidden');
 
-      for (let i = 0; i < cart.length; i++) {
-        const item = cart[i];
+      for (let i = 0; i < cart.cartItems.length; i++) {
+        const item = cart.cartItems[i];
         if (item.index == index) {
           item.quantity = Number(quantityInput.value);
           quantityLabel.textContent = item.quantity;
-          saveCart();
+          cart.saveCart();
           updatePage();
           break;
         }
@@ -236,7 +238,7 @@ function displayShippingDate(radio) {
   const today = dayjs();
   let deliveryDate = today.add(deliveryTime, 'days');
   const deliveryDay = deliveryDate.format('dddd');
-  console.log(deliveryDay);
+  // console.log(deliveryDay);
 
   //No shipping in weekends
   const addDays = deliveryDay == 'Saturday' ? 2 : deliveryDay == 'Saturday' ? 1 : 0;
@@ -257,10 +259,10 @@ function getCartItemContainer(index) {
 function displayCurrentDelivery(radio) {
   const index = radio.dataset.itemIndex;
   const shippingHandlingCost = Number(radio.dataset.price);
-  cart.forEach(item => {
+  cart.cartItems.forEach(item => {
     if (item.index == index) {
       item.shippingHandlingCost = shippingHandlingCost;
-      saveCart();
+      cart.saveCart();
     }
   });
   const cartItemContainer = getCartItemContainer(index);
@@ -292,14 +294,12 @@ function shippingHandlingCost() {
   return cost.toFixed(2);
 }
 
-displayCheckoutGrid();
-
 function updatePage() {
   const itemsQuantityLink = document.querySelector('.return-to-home-link');
-  itemsQuantityLink.textContent = totalQuantity() + ' items';
+  itemsQuantityLink.textContent = cart.totalQuantity() + ' items';
 
   const itemsQuantityElement = document.querySelector('.items-quantity');
-  itemsQuantityElement.textContent = `Items (${totalQuantity()}):`;
+  itemsQuantityElement.textContent = `Items (${cart.totalQuantity()}):`;
 
   const totalItemsCostElement = document.querySelector('.total-items-cost');
   totalItemsCostElement.textContent = '$' + itemsCost();
@@ -317,7 +317,7 @@ function updatePage() {
   totalCostElement.textContent = '$' + totalCost();
 }
 function itemsCost() {
-  return cart.reduce((acc, item) => acc + products[item.index].priceCents / 100 * item.quantity, 0).toFixed(2);
+  return cart.cartItems.reduce((acc, item) => acc + products[item.index].getPrice(false) * item.quantity, 0).toFixed(2);
 }
 
 function totalCostBeforeTax() {
@@ -331,3 +331,5 @@ function estimatedTax() {
 function totalCost() {
   return (Number(totalCostBeforeTax()) + Number(estimatedTax())).toFixed(2);
 }
+
+displayCheckoutGrid();

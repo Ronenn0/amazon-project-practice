@@ -1,31 +1,31 @@
-export class Cart {
+class Cart {
     cartItems;
 
     constructor() {
-        this.cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        this.cartItems = (JSON.parse(localStorage.getItem('cart'))?.cartItems) || [];
     }
 
     addToCart(index, quantity) {
         let alreadyExists = false;
-        for (const product of cart) {
+        for (const product of this.cartItems) {
             if (product.index == index) {
                 product.quantity += quantity;
-                //console.log(cart);
+                //console.log(this.cartItems);
                 alreadyExists = true;
                 break;
             }
         }
         if (!alreadyExists) {
-            cart.push({
+            this.cartItems.push({
                 index,
                 quantity,
                 shippingHandlingCost: 0
             });
         }
-        saveCart();
+        this.saveCart();
         // cart[index] = (cart[index] || 0) + quantity;
-        console.log(cart);
-        showAddedToCartMessage(index);
+        // console.log(this.cartItems);
+        this.showAddedToCartMessage(index);
     }
 
     saveCart() {
@@ -46,7 +46,9 @@ export class Cart {
 
     totalQuantity() {
         let counter = 0;
-        cart.forEach(product => counter += product.quantity);
+        this.cartItems.forEach(product => counter += product.quantity);
         return counter;
     }
 }
+
+export let cart = new Cart();

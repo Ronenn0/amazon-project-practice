@@ -1,3 +1,33 @@
+
+
+class Product {
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+  // keywords;
+
+  constructor(productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+
+  getStarsURL() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
+  }
+  getPrice(fixed, rounded) {
+    let price = this.priceCents / 100;
+    if (rounded) price = Math.round(price);
+    if (fixed) price = price.toFixed(2);
+    return price;
+  }
+
+}
+
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -657,4 +687,4 @@ export const products = [
       "mens"
     ]
   }
-];
+].map(productDetails => new Product(productDetails));

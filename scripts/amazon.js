@@ -1,5 +1,5 @@
 
-import { cart, addToCart, totalQuantity } from '../data/cart.js';
+import { cart } from '../data/cart.js';
 import { products } from '../data/products.js';
 
 // const products = [
@@ -39,7 +39,7 @@ displayCartQuantity();
 
 let productsHTML = '';
 products.forEach((product, i) => {
-    productsHTML += `
+  productsHTML += `
 <div class="product-container" data-product-index="${i}">
   <div class="product-image-container">
     <img class="product-image" src="${product.image}">
@@ -50,14 +50,14 @@ products.forEach((product, i) => {
   </div>
 
   <div class="product-rating-container">
-    <img class="product-rating-stars" src="images/ratings/rating-${product.rating.stars * 10}.png">
+    <img class="product-rating-stars" src="${product.getStarsURL()}">
     <div class="product-rating-count link-primary">
       ${product.rating.count}
     </div>
   </div>
 
   <div class="product-price">
-    $${(product.priceCents / 100).toFixed(2)}
+    $${product.getPrice(true)}
   </div>
 
   <div class="product-quantity-container">
@@ -87,25 +87,25 @@ products.forEach((product, i) => {
   </button>
 </div>
 `;
-    // productsGrid.innerHTML += html;
+  // productsGrid.innerHTML += html;
 });
 productsGrid.innerHTML = productsHTML;
 
 document.querySelectorAll('.js-add-to-cart').forEach(button => {
-    button.addEventListener('click', () => {
-        //console.log(button.getAttribute('index'));
-        const index = button.dataset.productIndex;
-        const quantity = Number(document.querySelector(`.quantity[data-product-index="${index}"`).value);
-        addToCart(index, quantity);
-        displayCartQuantity();
-    });
+  button.addEventListener('click', () => {
+    //console.log(button.getAttribute('index'));
+    const index = button.dataset.productIndex;
+    const quantity = Number(document.querySelector(`.quantity[data-product-index="${index}"`).value);
+    cart.addToCart(index, quantity);
+    displayCartQuantity();
+  });
 });
 
 function displayCartQuantity(quantity) {
-    const cartQuantityElement = document.querySelector('.cart-quantity');
-    if (quantity) {
-        cartQuantityElement.textContent = Number(cartQuantityElement.textContent) + quantity;
-        return;
-    }
-    cartQuantityElement.textContent = totalQuantity();
+  const cartQuantityElement = document.querySelector('.cart-quantity');
+  if (quantity) {
+    cartQuantityElement.textContent = Number(cartQuantityElement.textContent) + quantity;
+    return;
+  }
+  cartQuantityElement.textContent = cart.totalQuantity();
 }
