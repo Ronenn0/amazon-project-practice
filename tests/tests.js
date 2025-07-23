@@ -8,7 +8,7 @@ import { fibonaci, sum } from "./test1-function.js";
 // console.log('Bigger than 1 and not rounded number');
 // console.log(fibonaci(1.5) == 'Enter a round number' ? 'passed' : 'failed');
 
-const tests = {
+export const tests = {
     fibonaci: [{
         title: 'Negative number',
         realOutput: fibonaci(-0.5),
@@ -50,13 +50,13 @@ const tests = {
 
 // console.log(Object.keys(tests));
 
-Object.keys(tests).forEach(functions => {
-    console.log(`\n*** test suite: ${functions} ***`);
-    tests[functions].forEach(test => {
-        const { title, realOutput, expectedOutput } = test;
-        console.log(title);
-        console.log(`Expected Output: ${expectedOutput}`);
-        console.log(`Actual Output: ${realOutput}`);
-        console.log('*_ ' + (realOutput == expectedOutput ? 'passed' : 'failed') + ' _*\n ');
-    });
-});
+// Object.keys(tests).forEach(functions => {
+//     console.log(`\n*** test suite: ${functions} ***`);
+//     tests[functions].forEach(test => {
+//         const { title, realOutput, expectedOutput } = test;
+//         console.log(title);
+//         console.log(`Expected Output: ${expectedOutput}`);
+//         console.log(`Actual Output: ${realOutput}`);
+//         console.log('*_ ' + (realOutput == expectedOutput ? 'passed' : 'failed') + ' _*\n ');
+//     });
+// });
