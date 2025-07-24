@@ -27,7 +27,9 @@ class Cart {
         this.saveCart();
         // cart[index] = (cart[index] || 0) + quantity;
         // console.log(this.cartItems);
-        this.showAddedToCartMessage(index);
+        try {
+            this.showAddedToCartMessage(index);
+        } catch { }
     }
 
     saveCart() {
@@ -64,6 +66,11 @@ class Cart {
         });
         new_cart.cartItems = new_cartItems;
         return new_cart;
+    }
+
+    resetItems() {
+        this.cartItems = [];
+        localStorage.setItem('cart', JSON.stringify([]));
     }
 }
 

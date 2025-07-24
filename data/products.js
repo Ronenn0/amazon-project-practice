@@ -776,3 +776,5 @@ export const products = [
     ]
   }
 ].map(productDetails => productDetails.type == 'clothing' ? new Clothing(productDetails) : productDetails.type == 'appliance' ? new Appliance(productDetails) : new Product(productDetails));*/
+
+
