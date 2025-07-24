@@ -2,10 +2,7 @@
 import { cart } from '../data/cart.js';
 import { products, loadProductsFetch } from '../data/products.js';
 
-// loadProducts(renderProductsHTML);
-loadProductsFetch().then(() => {
-  renderProductsHTML();
-});
+
 
 // const products = [
 //     {
@@ -116,3 +113,10 @@ function displayCartQuantity(quantity) {
   }
   cartQuantityElement.textContent = cart.totalQuantity();
 }
+
+// loadProducts(renderProductsHTML);
+await loadProductsFetch();
+renderProductsHTML();
+// loadProductsFetch().then(() => {
+//   renderProductsHTML();
+// });
