@@ -38,9 +38,10 @@ const productsGrid = document.querySelector('.products-grid');
 
 displayCartQuantity();
 
-function renderProductsHTML() {
+function renderProductsHTML(productsToRender) {
+  if (!productsToRender) productsToRender = products;
   let productsHTML = '';
-  products.forEach((product, i) => {
+  productsToRender.forEach((product, i) => {
     productsHTML += `
       <div class="product-container" data-product-index="${i}">
         <div class="product-image-container">
@@ -119,6 +120,31 @@ function displayCartQuantity(quantity) {
 // loadProducts(renderProductsHTML);
 await loadProductsFetch();
 renderProductsHTML();
+addSearchEventListeners();
 // loadProductsFetch().then(() => {
 //   renderProductsHTML();
 // });
+
+
+function addSearchEventListeners() {
+  const searchBtn = document.querySelector('.search-button');
+  const inputElement = document.querySelector('.search-bar');
+  searchBtn.addEventListener('click', () => {
+    search();
+  });
+  inputElement.addEventListener('keydown', event => {
+    if (event.key == 'Enter') search();
+  });
+}
+function search() {
+  const inputElement = document.querySelector('.search-bar');
+  const input = inputElement.value;
+  // console.log(products);
+  // products.forEach(p => console.log(p));
+  const searchedProducts = products.filter(product => lowerCase(product.name).includes(lowerCase(input)) || product.keywords.filter(key => lowerCase(key).includes(lowerCase(input))).length > 0);
+  renderProductsHTML(searchedProducts);
+}
+
+function lowerCase(string) {
+  return string.toLowerCase();
+}
