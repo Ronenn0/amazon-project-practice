@@ -1,8 +1,11 @@
 
 import { cart } from '../data/cart.js';
-import { products, loadProducts } from '../data/products.js';
+import { products, loadProductsFetch } from '../data/products.js';
 
-loadProducts(renderProductsHTML);
+// loadProducts(renderProductsHTML);
+loadProductsFetch().then(() => {
+  renderProductsHTML();
+});
 
 // const products = [
 //     {

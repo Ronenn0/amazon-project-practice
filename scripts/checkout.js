@@ -1,6 +1,6 @@
 import { cart } from "../data/cart.js";
 
-import { products, loadProducts } from "../data/products.js";
+import { products, loadProductsFetch } from "../data/products.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
@@ -334,4 +334,6 @@ function estimatedTax() {
 function totalCost() {
   return (Number(totalCostBeforeTax()) + Number(estimatedTax())).toFixed(2);
 }
-loadProducts(displayCheckoutGrid);
+loadProductsFetch().then(() => {
+  displayCheckoutGrid()
+});
