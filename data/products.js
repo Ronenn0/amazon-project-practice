@@ -1,5 +1,3 @@
-
-
 class Product {
   id;
   image;
@@ -71,9 +69,22 @@ class Appliance extends Product {
 }
 
 
+export let products = [];
 
+export async function loadProducts(func) {
+  const xhr = new XMLHttpRequest();
 
+  xhr.addEventListener('load', () => {
+    products = JSON.parse(xhr.response).map(productDetails => productDetails.type == 'clothing' ? new Clothing(productDetails) : productDetails.type == 'appliance' ? new Appliance(productDetails) : new Product(productDetails));
+    console.log('load products');
 
+    func();
+  });
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.send();
+}
+
+/*
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -745,4 +756,4 @@ export const products = [
       "mens"
     ]
   }
-].map(productDetails => productDetails.type == 'clothing' ? new Clothing(productDetails) : productDetails.type == 'appliance' ? new Appliance(productDetails) : new Product(productDetails));
+].map(productDetails => productDetails.type == 'clothing' ? new Clothing(productDetails) : productDetails.type == 'appliance' ? new Appliance(productDetails) : new Product(productDetails));*/

@@ -1,11 +1,11 @@
 import { cart } from "../data/cart.js";
 
-import { products } from "../data/products.js";
+import { products, loadProducts } from "../data/products.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
-import '../data/car.js';
-import '../data/backend-practice.js';
 
+// import '../data/car.js';
+// import '../data/backend-practice.js';
 
 const orderSummaryContainer = document.querySelector('.order-summary');
 
@@ -334,5 +334,4 @@ function estimatedTax() {
 function totalCost() {
   return (Number(totalCostBeforeTax()) + Number(estimatedTax())).toFixed(2);
 }
-
-displayCheckoutGrid();
+loadProducts(displayCheckoutGrid);
