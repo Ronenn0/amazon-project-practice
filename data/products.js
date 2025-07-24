@@ -71,7 +71,7 @@ class Appliance extends Product {
 
 export let products = [];
 
-export async function loadProductsXML(func) {
+export async function loadProductsXHR(func) {
   const xhr = new XMLHttpRequest();
 
   xhr.addEventListener('load', () => {
