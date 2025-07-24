@@ -334,9 +334,20 @@ function estimatedTax() {
 function totalCost() {
   return (Number(totalCostBeforeTax()) + Number(estimatedTax())).toFixed(2);
 }
-await loadProductsFetch();
-displayCheckoutGrid();
+// async function loadPage() {
+//   try {
+//     await loadProductsFetch();
+//     displayCheckoutGrid();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+async function loadPage() {
+  await loadProductsFetch();
+  displayCheckoutGrid();
+}
 
+loadPage();
 // loadProductsFetch().then(() => {
 //   displayCheckoutGrid();
 // });
