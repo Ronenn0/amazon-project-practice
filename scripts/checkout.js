@@ -2,6 +2,7 @@ import { cart } from "../data/cart.js";
 
 import { products, loadProductsFetch } from "../data/products.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
+import { addOrder } from "../data/orders.js";
 
 
 // import '../data/car.js';
@@ -122,7 +123,7 @@ function displayCheckoutGrid() {
             <div class="payment-summary-money total-cost">$</div>
           </div>
 
-          <button class="place-order-button button-primary">
+          <button class="place-order-button button-primary js-place-order">
             Place your order
           </button>
 `;
@@ -347,7 +348,28 @@ async function loadPage() {
   displayCheckoutGrid();
 }
 
-loadPage();
+await loadPage();
 // loadProductsFetch().then(() => {
 //   displayCheckoutGrid();
 // });
+
+document.querySelector('.js-place-order').addEventListener('click', async () => {
+  try {
+    const response = await fetch('https://supersimplebackend.dev/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cart: cart.getCartOrganized()
+      })
+    });
+
+    const order = await response.json();
+    addOrder(order);
+    console.log(order);
+  } catch {
+    console.log('Unexpected error, try again later.');
+  }
+  location.href = 'orders.html';
+});

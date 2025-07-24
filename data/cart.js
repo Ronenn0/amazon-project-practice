@@ -1,3 +1,5 @@
+import { products } from "./products.js";
+
 class Cart {
     cartItems;
 
@@ -48,6 +50,20 @@ class Cart {
         let counter = 0;
         this.cartItems.forEach(product => counter += product.quantity);
         return counter;
+    }
+
+    getCartOrganized() {
+        const new_cart = { ...cart };
+        const new_cartItems = [];
+        this.cartItems.forEach((item) => {
+            new_cartItems.push({
+                productId: products[Number(item.index)].id,
+                quantity: item.quantity,
+                deliveryOptionId: item.shippingHandlingCost == 0 ? '1' : item.shippingHandlingCost == 4.99 ? '2' : item.shippingHandlingCost == 7.99 ? '3' : '1'
+            })
+        });
+        new_cart.cartItems = new_cartItems;
+        return new_cart;
     }
 }
 
